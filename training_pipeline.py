@@ -43,7 +43,7 @@ def TrainingPipeline():
     data_extraction = SSHOperator(
         task_id='data_extraction',
         ssh_conn_id='ssh_default',
-        command='conda activate fasttext_model_training && \
+        command='/home/ubuntu/miniconda3/condabin/conda activate fasttext_model_training && \
             cd /home/ubuntu/fasttext_model_training && \
             dvc update product-non-pharma.dvc',
         remote_host="{{ ti.xcom_pull(task_ids='find_instance_ip') }}"
@@ -52,7 +52,7 @@ def TrainingPipeline():
     training_pipeline = SSHOperator(
         task_id='training_pipeline',
         ssh_conn_id='ssh_default',
-        command="conda activate fasttext_model_training && \
+        command="/home/ubuntu/miniconda3/condabin/conda activate fasttext_model_training && \
             cd /home/ubuntu/fasttext_model_training && \
             mlflow run . --no-conda \
             -P run_clean_train='no' \
