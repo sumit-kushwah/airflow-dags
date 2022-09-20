@@ -8,7 +8,7 @@ from airflow.models.baseoperator import chain
 from airflow.models import Variable
 
 
-instance_id = Variable.get('instance_id')
+instance_id = ''
 
 def find_instance_ip():
     ec2 = boto3.resource('ec2')
@@ -53,24 +53,25 @@ def TrainingPipeline():
         remote_host="{{ ti.xcom_pull(task_ids='find_instance_ip') }}"
     )
     
+    # mlflow run . --no-conda \
+    #         -P run_clean_train='no' \
+    #         -P run_clean_test='no' \
+    #         -P raw_train_data_file={{var.value.get('raw_train_data_file')}} \
+    #         -P raw_test_data_file={{var.value.get('raw_test_data_file')}} \
+    #         -P cleaned_col_name={{var.value.get('cleaned_col_name')}} \
+    #         -P cleaned_col_name_test={{var.value.get('cleaned_col_name_test')}} \
+    #         -P label_col_train={{var.value.get('label_col_train')}} \
+    #         -P label_col_test={{{{var.value.get('label_col_test')}}}} \
+    #         -P dim={{var.value.get('dim')}} \
+    #         -P thread={{var.value.get('thread')}} \
+    #         -P input_cols_test={{var.value.get('input_cols_test')}}  \
+    #         -P prev_model_pred_col={{ var.value.get('prev_model_pred_col') }}",
     training_pipeline = SSHOperator(
         task_id='training_pipeline',
         ssh_conn_id='ssh_default',
         command="conda activate fasttext_model_training && \
             cd /home/ubuntu/fasttext_model_training && \
-            mlflow run . --no-conda \
-            -P run_clean_train='no' \
-            -P run_clean_test='no' \
-            -P raw_train_data_file={{var.value.get('raw_train_data_file')}} \
-            -P raw_test_data_file={{var.value.get('raw_test_data_file')}} \
-            -P cleaned_col_name={{var.value.get('cleaned_col_name')}} \
-            -P cleaned_col_name_test={{var.value.get('cleaned_col_name_test')}} \
-            -P label_col_train={{var.value.get('label_col_train')}} \
-            -P label_col_test={{{{var.value.get('label_col_test')}}}} \
-            -P dim={{var.value.get('dim')}} \
-            -P thread={{var.value.get('thread')}} \
-            -P input_cols_test={{var.value.get('input_cols_test')}}  \
-            -P prev_model_pred_col={{var.value.get('prev_model_pred_col')}}",
+            echo {{ds}}",
         remote_host="{{ ti.xcom_pull(task_ids='find_instance_ip') }}"
     )
 
