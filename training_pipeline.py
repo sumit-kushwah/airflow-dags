@@ -44,7 +44,7 @@ def TrainingPipeline():
     data_extraction = SSHOperator(
         task_id='data_extraction',
         ssh_conn_id='ssh_default',
-        command='/home/ubuntu/miniconda3/condabin/conda init bash && \
+        command='echo $SHELL && \
             /home/ubuntu/miniconda3/condabin/conda activate fasttext_model_training && \
             cd /home/ubuntu/fasttext_model_training && \
             dvc update product-non-pharma.dvc',
