@@ -8,7 +8,7 @@ from airflow.models.baseoperator import chain
 from airflow.models import Variable
 
 
-instance_id = ''
+instance_id = Variable.get('instance_id')
 
 def find_instance_ip():
     ec2 = boto3.resource('ec2')
