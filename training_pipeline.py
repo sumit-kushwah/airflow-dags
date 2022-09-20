@@ -45,7 +45,9 @@ def TrainingPipeline():
         task_id='data_extraction',
         ssh_conn_id='ssh_default',
         command='source ~/.bashrc && \
-            /home/ubuntu/miniconda3/condabin/conda activate fasttext_model_training && \
+            cat ~/.bashrc && \
+            source /home/ubuntu/miniconda3/etc/profile.d/conda.sh && \
+            conda activate fasttext_model_training && \
             cd /home/ubuntu/fasttext_model_training && \
             dvc update product-non-pharma.dvc',
         remote_host="{{ ti.xcom_pull(task_ids='find_instance_ip') }}"
