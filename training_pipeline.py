@@ -71,7 +71,7 @@ def TrainingPipeline():
         ssh_conn_id='ssh_default',
         command="conda activate fasttext_model_training && \
             cd /home/ubuntu/fasttext_model_training && \
-            echo {{var.get('label_col_train')}}",
+            echo {{var.value.get('dim', 'fallback')}}",
         remote_host="{{ ti.xcom_pull(task_ids='find_instance_ip') }}"
     )
 
