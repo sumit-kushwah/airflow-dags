@@ -59,6 +59,7 @@ def TrainingPipeline():
             cd /home/ubuntu/fasttext_model_training && \
             git pull origin master && \
             mlflow run . --no-conda \
+            -P mlflow_tracking_uri={{var.value.get('mlflow_tracking_uri')}} \
             -P run_clean_train='no' \
             -P run_clean_test='no' \
             -P raw_train_data_file={{var.value.get('raw_train_data_file')}} \
