@@ -18,7 +18,10 @@ def DeploymentPipeline():
         command="source /home/sumitkushwah1729/miniconda3/etc/profile.d/conda.sh && \
             conda activate flask_api_deployment && \
             cd /home/sumitkushwah1729/ml_flask_api/models && \
-            python pull_latest_model.py --model_name fasttext_product_non_pharma --get_model True",
+            python pull_latest_model.py \
+            --model_name fasttext_product_non_pharma \
+            --tracking_uri {{var.value.get('mlflow_tracking_uri')}} \
+            --get_model True",
     )
 
     restart_service = SSHOperator(
