@@ -59,6 +59,8 @@ def TrainingPipeline():
             cd /home/ubuntu/fasttext_model_training && \
             git pull origin master && \
             export MLFLOW_TRACKING_URI={{var.value.get('mlflow_tracking_uri')}} && \
+            export MLFLOW_TRACKING_USERNAME=sumit \
+            export MLFLOW_TRACKING_PASSWORD=sumit \
             echo $MLFLOW_TRACKING_URI && \
             mlflow run . --no-conda \
             -P run_clean_train='no' \
