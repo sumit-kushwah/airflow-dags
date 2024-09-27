@@ -24,6 +24,7 @@ with DAG(
         image='hello-world:latest',  # Replace with your custom Docker image
         arguments=["print('Hello from custom Docker image!')"],
         name="hello-world-task",
+        task_id="hello-world-task",
         in_cluster=True,  # If you're running the task within the Kubernetes cluster
         is_delete_operator_pod=True,  # Clean up the pod after task completes
         get_logs=True,  # Retrieve logs from the pod
